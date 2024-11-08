@@ -1,5 +1,6 @@
 mod app;
 mod assets;
+mod views;
 
 use app::App;
 use dioxus::prelude::*;

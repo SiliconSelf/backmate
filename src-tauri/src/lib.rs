@@ -1,3 +1,5 @@
+mod views;
+
 use tauri::{Manager, State};
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
