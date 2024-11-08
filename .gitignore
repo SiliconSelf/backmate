@@ -1,7 +1,5 @@
 /dist/
 /target/
+/.idea/
+/assets/style.css
 /Cargo.lock
-/.idea/modules.xml
-/.idea/vcs.xml
-/assets/tailwind.css
-/.idea/BackMate.iml
