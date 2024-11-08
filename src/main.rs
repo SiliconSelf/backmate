@@ -1,4 +1,5 @@
 mod app;
+mod tailwind;
 
 use app::App;
 use dioxus::prelude::*;
