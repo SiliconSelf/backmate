@@ -16,5 +16,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Install Prerequisites
+        run: npm install -D tailwindcss
       - name: Run Clippy
         run: cargo clippy -- -D warnings --no-deps
