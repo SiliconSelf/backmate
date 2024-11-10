@@ -1,23 +1,23 @@
+use std::future::Future;
 use serde::{Deserialize, Serialize};
+use crate::api::ApiErrorCode;
 
-pub(crate) struct Body;
-pub(crate) enum Response {
-    Ok(Box<OkResponse>),
-    BadRequest(Box<BadRequestResponse>),
-}
+#[derive(Serialize, Deserialize)]
+pub(crate) struct Request;
+
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub(crate) struct OkResponse {
+pub(crate) struct Response {
     /// The identifier for the account.
-    account_id: String,
+    pub(crate) account_id: String,
     /// A data structure that groups the information you need by API suite.
-    api_info: ApiInfo,
+    pub(crate) api_info: ApiInfo,
     /// An authorization token to use with all calls, other than
     /// b2_authorize_account, that need an Authorization header. This
     /// authorization token is valid for at most 24 hours.
-    authorization_token: String,
+    pub(crate) authorization_token: String,
     /// Expiration timestamp for the application key.
-    application_key_expiration_timestamp: Option<usize>,
+    pub(crate) application_key_expiration_timestamp: Option<usize>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -25,7 +25,7 @@ pub(crate) struct OkResponse {
 pub(crate) struct ApiInfo {
     /// A data structure that contains the information you need for the Partner
     /// API.
-    groups_api: GroupsAPI,
+    groups_api: Option<GroupsAPI>,
     /// A data structure that contains the information you need for the B2
     /// Native API.
     storage_api: StorageApi,
@@ -108,26 +108,65 @@ pub(crate) enum Capabilities {
     Other,
 }
 
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub(crate) struct BadRequestResponse {
-    /// The numeric HTTP status code. Always matches the status in the HTTP
-    /// response.
-    status: usize,
-    /// A single-identifier code that identifies the error.
-    code: BadRequestCode,
-    /// A human-readable message, in English, saying what went wrong.
-    message: String,
-}
+#[cfg(test)]
+mod tests {
+    use crate::api::b2_authorize_account::Response;
 
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub(crate) enum BadRequestCode {
-    /// The requested bucket ID does not match an existing bucket.
-    BadBucketId,
-    /// The request had the wrong fields or illegal values. The message
-    /// returned with the error will describe the problem.
-    BadRequest,
-    #[serde(other)]
-    Other,
+    #[test]
+    fn deserialize_ok() {
+        serde_json::from_str::<Response>(r#"
+{
+  "accountId": "ACCOUNT_ID",
+  "apiInfo": {
+    "storageApi": {
+      "absoluteMinimumPartSize": 5000000,
+      "apiUrl": "https://api001.backblazeb2.com",
+      "bucketId": null,
+      "bucketName": null,
+      "capabilities": [
+        "deleteFiles",
+        "deleteKeys",
+        "readBucketEncryption",
+        "writeKeys",
+        "writeBuckets",
+        "writeBucketReplications",
+        "readBucketReplications",
+        "deleteBuckets",
+        "readBuckets",
+        "bypassGovernance",
+        "readFileLegalHolds",
+        "readFiles",
+        "listAllBucketNames",
+        "readBucketNotifications",
+        "readBucketRetentions",
+        "writeBucketRetentions",
+        "writeFileLegalHolds",
+        "shareFiles",
+        "writeFiles",
+        "listKeys",
+        "listBuckets",
+        "listFiles",
+        "writeFileRetentions",
+        "writeBucketEncryption",
+        "writeBucketNotifications",
+        "readFileRetentions"
+      ],
+      "downloadUrl": "https://f001.backblazeb2.com",
+      "infoType": "storageApi",
+      "namePrefix": null,
+      "recommendedPartSize": 100000000,
+      "s3ApiUrl": "https://s3.us-west-001.backblazeb2.com"
+    },
+    "groupsApi": {
+      "capabilities": [
+        "all"
+      ],
+      "groupsApiUrl": "https://apiNNN.backblazeb2.com",
+      "infoType": "groupsApi"
+    }
+  },
+  "applicationKeyExpirationTimestamp": null,
+  "authorizationToken": "AUTHORIZATION_TOKEN"
+}"#).unwrap();
+    }
 }
