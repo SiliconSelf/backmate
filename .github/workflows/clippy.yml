@@ -30,4 +30,4 @@ jobs:
             libayatana-appindicator3-dev \
             librsvg2-dev
       - name: Run Clippy
-        run: cargo clippy -- -D warnings --no-deps --workspace
+        run: cargo clippy -- -D warnings --no-deps
