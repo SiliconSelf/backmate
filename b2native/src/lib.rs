@@ -1,3 +1,4 @@
+#![feature(try_trait_v2)]
 #![doc = include_str!("../README.md")]
 
 mod api;
@@ -12,10 +13,13 @@ use crate::config::CONFIG;
 #[derive(Debug)]
 pub struct Session {
     /// The authorization token this session will use
-    _token: String,
+    token: String,
     /// The HTTP client this session will reuse to take advantage of connection
     /// pooling
-    _http_client: Client,
+    http_client: Client,
+    /// Information about using the storage API returned by
+    /// `b2_authorize_account`
+    storage_api_info: api::b2_authorize_account::StorageApi,
 }
 
 /// Errors that can be returned in the creation or use of a ``Session``
@@ -81,8 +85,9 @@ impl Session {
                 response.json::<api::b2_authorize_account::Response>().await
             {
                 Ok(Self {
-                    _token: body.authorization_token,
-                    _http_client: client,
+                    token: body.authorization_token,
+                    http_client: client,
+                    storage_api_info: body.api_info.storage_api,
                 })
             } else {
                 Err(SessionError::SuccessfulDeserializationFailed)

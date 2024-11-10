@@ -172,6 +172,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "b2native_codegen"
+version = "0.1.0"
+
+[[package]]
 name = "backmate"
 version = "0.1.0"
 dependencies = [
