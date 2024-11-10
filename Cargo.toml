@@ -25,4 +25,4 @@ serde-wasm-bindgen = "0.6"
 manganis = "0.2.2"
 
 [workspace]
-members = ["src-tauri"]
+members = ["src-tauri", "b2native"]
