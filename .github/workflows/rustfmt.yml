@@ -1,4 +1,4 @@
-name: Rust - Build
+name: Rust - Formatting
 
 on:
   push:
