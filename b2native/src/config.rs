@@ -1,3 +1,7 @@
+//! Library configuration
+//!
+//! A few aspects of the library can be configured via environment variables prefixed with `B2NATIVE_`.
+
 use std::sync::LazyLock;
 
 use figment::{
@@ -7,10 +11,13 @@ use figment::{
 };
 use serde::{Deserialize, Serialize};
 
-pub(crate) static CONFIG: LazyLock<Config> = LazyLock::new(|| Config::new());
+/// A lazily-evaluated static containing the global library configuration
+pub(crate) static CONFIG: LazyLock<Config> = LazyLock::new(Config::new);
 
+/// A struct representing the library configuration
 #[derive(Serialize, Deserialize)]
 pub(crate) struct Config {
+    /// The URL to call for the ``b2_authorize_account`` endpoint
     pub(crate) authorize_account_endpoint: String,
 }
 
@@ -35,6 +42,7 @@ impl Provider for Config {
 }
 
 impl Config {
+    /// Create a new instance of the library configuration
     pub(crate) fn new() -> Self {
         Figment::from(Self::default())
             .merge(Env::prefixed("B2NATIVE_"))

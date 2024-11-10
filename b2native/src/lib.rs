@@ -1,16 +1,23 @@
+#![doc = include_str!("../README.md")]
+
 mod api;
 mod config;
 
 use reqwest::{Client, Error};
 
 use crate::config::CONFIG;
+pub use api::ApiError;
 
+/// A session for interacting with the Backblaze API
 #[derive(Debug)]
 pub struct Session {
+    /// The authorization token this session will use
     _token: String,
+    /// The HTTP client this session will reuse to take advantage of connection pooling
     _http_client: Client,
 }
 
+/// Errors that can be returned in the creation or use of a ``Session``
 #[derive(Debug)]
 pub enum SessionError {
     /// The library failed to send the request to the Backblaze API server.
@@ -21,7 +28,9 @@ pub enum SessionError {
     ///
     /// This is usually because the user gave incorrect inputs.
     AuthenticationRejected {
+        /// The machine-readable error code returned with the rejection
         code: api::ApiErrorCode,
+        /// The human-readable error message returned with the rejection
         message: String,
     },
     /// The Backblaze API server returned a 200 status code, but
@@ -48,6 +57,13 @@ impl Session {
     /// Create a new session
     ///
     /// This function calls the [`b2_authorize_account`](https://www.backblaze.com/apidocs/b2-authorize-account) endpoint to retrieve an authorization token and establish a new session
+    ///
+    /// # Errors
+    ///
+    /// This function can return the following errors:
+    /// - `SessionError:RequestFailed`
+    /// - `SessionError::SuccessfulDeserializationFailed`
+    /// - `SessionError::ErrorDeserializationFailed`
     pub async fn try_new<S: Into<String>>(
         application_key_id: S,
         application_key: S,
@@ -69,7 +85,7 @@ impl Session {
             } else {
                 Err(SessionError::SuccessfulDeserializationFailed)
             }
-        } else if let Ok(error) = response.json::<api::ApiError>().await {
+        } else if let Ok(error) = response.json::<ApiError>().await {
             Err(SessionError::AuthenticationRejected {
                 code: error.code,
                 message: error.message,
@@ -91,6 +107,6 @@ mod tests {
             include_str!("../../key"),
         )
         .await;
-        assert!(session.is_ok())
+        assert!(session.is_ok());
     }
 }

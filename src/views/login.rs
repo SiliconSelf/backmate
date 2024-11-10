@@ -1,14 +1,21 @@
+//! The login page the user will use to authenticate with Backblaze
+
 use dioxus::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::views::Route;
 
+/// Arguments used to invoke authentication via tauri
 #[derive(Serialize, Deserialize)]
 struct LoginArgs<'a> {
-    username: &'a str,
-    password: &'a str,
+    /// The API Key ID
+    api_key_id: &'a str,
+    /// The API Key
+    api_key: &'a str,
 }
 
+/// Render the login view
+#[allow(non_snake_case)]
 pub(crate) fn Login() -> Element {
     rsx! {
         section {

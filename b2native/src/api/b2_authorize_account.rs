@@ -1,12 +1,16 @@
-use std::future::Future;
+//! Functionality related to the ``b2_authorize_account`` endpoint
+//!
+//! [API Docs](https://www.backblaze.com/apidocs/b2-authorize-account)
 
 use serde::{Deserialize, Serialize};
 
-use crate::api::ApiErrorCode;
-
+/// The request body
 #[derive(Serialize, Deserialize)]
 pub(crate) struct Request;
 
+/// The expected response body
+///
+/// This response body structure correlates to the expected response structure of a successful request.
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct Response {
@@ -15,7 +19,7 @@ pub(crate) struct Response {
     /// A data structure that groups the information you need by API suite.
     pub(crate) api_info: ApiInfo,
     /// An authorization token to use with all calls, other than
-    /// b2_authorize_account, that need an Authorization header. This
+    /// ``b2_authorize_account``, that need an Authorization header. This
     /// authorization token is valid for at most 24 hours.
     pub(crate) authorization_token: String,
     /// Expiration timestamp for the application key.
@@ -79,6 +83,7 @@ pub(crate) struct StorageApi {
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename = "camelCase")]
+#[allow(clippy::missing_docs_in_private_items)]
 pub(crate) enum Capabilities {
     DeleteFiles,
     DeleteKeys,
@@ -116,7 +121,7 @@ mod tests {
 
     #[test]
     fn deserialize_ok() {
-        serde_json::from_str::<Response>(
+        assert!(serde_json::from_str::<Response>(
             r#"
 {
   "accountId": "ACCOUNT_ID",
@@ -171,7 +176,6 @@ mod tests {
   "applicationKeyExpirationTimestamp": null,
   "authorizationToken": "AUTHORIZATION_TOKEN"
 }"#,
-        )
-        .unwrap();
+        ).is_ok());
     }
 }
