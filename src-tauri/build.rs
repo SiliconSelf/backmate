@@ -1,3 +1,15 @@
+//! Build processes for BackMate
+
+use std::process::Command;
+
 fn main() {
-    tauri_build::build()
+    println!("cargo::rerun-if-changed=input.css");
+    println!("cargo::rerun-if-changed=tailwind.config.js");
+    Command::new("npx")
+        .arg("tailwindcss")
+        .args(["-i", "./input.css"])
+        .args(["-o", "./assets/style.css"])
+        .output()
+        .expect("Failed to run Tailwind");
+    tauri_build::build();
 }
