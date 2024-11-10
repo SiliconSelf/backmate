@@ -1,6 +1,7 @@
 //! Library configuration
 //!
-//! A few aspects of the library can be configured via environment variables prefixed with `B2NATIVE_`.
+//! A few aspects of the library can be configured via environment variables
+//! prefixed with `B2NATIVE_`.
 
 use std::sync::LazyLock;
 

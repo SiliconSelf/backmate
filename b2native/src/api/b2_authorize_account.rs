@@ -10,7 +10,8 @@ pub(crate) struct Request;
 
 /// The expected response body
 ///
-/// This response body structure correlates to the expected response structure of a successful request.
+/// This response body structure correlates to the expected response structure
+/// of a successful request.
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct Response {
@@ -176,6 +177,7 @@ mod tests {
   "applicationKeyExpirationTimestamp": null,
   "authorizationToken": "AUTHORIZATION_TOKEN"
 }"#,
-        ).is_ok());
+        )
+        .is_ok());
     }
 }

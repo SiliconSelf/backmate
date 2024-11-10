@@ -23,7 +23,8 @@ extern "C" {
 
 /// Render the App
 ///
-/// This function only really renders `Router::<Route> {}`. If you want to see where the real magic happens, go look at `views::Route`.
+/// This function only really renders `Router::<Route> {}`. If you want to see
+/// where the real magic happens, go look at `views::Route`.
 pub(crate) fn App() -> Element {
     rsx! { Router::<Route> {} }
 }

@@ -3,17 +3,18 @@
 mod api;
 mod config;
 
+pub use api::ApiError;
 use reqwest::{Client, Error};
 
 use crate::config::CONFIG;
-pub use api::ApiError;
 
 /// A session for interacting with the Backblaze API
 #[derive(Debug)]
 pub struct Session {
     /// The authorization token this session will use
     _token: String,
-    /// The HTTP client this session will reuse to take advantage of connection pooling
+    /// The HTTP client this session will reuse to take advantage of connection
+    /// pooling
     _http_client: Client,
 }
 
