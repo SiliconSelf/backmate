@@ -65,6 +65,3 @@ unneeded_field_pattern = "warn"
 unseparated_literal_suffix = "warn"
 unwrap_used = "warn"
 wildcard_dependencies = "warn"
-
-[lints]
-workspace = true
