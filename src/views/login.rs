@@ -1,11 +1,12 @@
 use dioxus::prelude::*;
+use serde::{Deserialize, Serialize};
+
 use crate::views::Route;
-use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
 struct LoginArgs<'a> {
     username: &'a str,
-    password: &'a str
+    password: &'a str,
 }
 
 pub(crate) fn Login() -> Element {

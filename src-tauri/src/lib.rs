@@ -22,7 +22,9 @@ pub fn run() {
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(tauri::generate_handler![greet, logged_in])
         .setup(|app| {
-            app.manage(Auth { logged_in: false });
+            app.manage(Auth {
+                logged_in: false,
+            });
             Ok(())
         })
         .run(tauri::generate_context!())

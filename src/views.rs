@@ -1,10 +1,9 @@
-mod login;
 mod dashboard;
+mod login;
 
-use dioxus::prelude::*;
-
-pub(crate) use login::Login;
 pub(crate) use dashboard::Dashboard;
+use dioxus::prelude::*;
+pub(crate) use login::Login;
 
 #[derive(Routable, PartialEq, Clone)]
 pub(crate) enum Route {
@@ -12,5 +11,5 @@ pub(crate) enum Route {
     #[route("/:..segments")]
     Login {},
     #[route("/dashboard")]
-    Dashboard {}
+    Dashboard {},
 }
