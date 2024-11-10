@@ -1,4 +1,4 @@
-//! Build processes for BackMate
+//! Build processes for `BackMate`
 
 use std::process::Command;
 
