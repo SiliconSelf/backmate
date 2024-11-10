@@ -63,6 +63,7 @@ impl Session {
     ///
     /// This function can return the following errors:
     /// - `SessionError:RequestFailed`
+    /// - `SessionError::AuthenticationRejected`
     /// - `SessionError::SuccessfulDeserializationFailed`
     /// - `SessionError::ErrorDeserializationFailed`
     pub async fn try_new<S: Into<String>>(
