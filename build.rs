@@ -1,3 +1,5 @@
+//! `BackMate` UI pre-build script
+
 use std::process::Command;
 
 fn main() {

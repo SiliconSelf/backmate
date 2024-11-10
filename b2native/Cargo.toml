@@ -15,3 +15,7 @@ serde_json = { version = "1.0" }
 
 [lints]
 workspace = true
+
+[features]
+default = []
+integration-tests = []
