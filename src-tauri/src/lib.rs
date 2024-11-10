@@ -26,7 +26,8 @@ pub struct Auth {
 /// Run the tauri application
 ///
 /// # Panics
-/// This function will panic if the graphical program fails to start (i.e. if run on a headless system).
+/// This function will panic if the graphical program fails to start (i.e. if
+/// run on a headless system).
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
