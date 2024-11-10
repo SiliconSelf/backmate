@@ -97,13 +97,12 @@ impl Session {
     }
 }
 
-#[cfg(all(test, feature = "integration-tests"))]
+#[cfg(test)]
 mod tests {
-    use crate::Session;
-
     #[tokio::test]
+    #[cfg(feature = "integration-tests")]
     async fn test_auth() {
-        let session = Session::try_new(
+        let session = crate::Session::try_new(
             include_str!("../../key_id"),
             include_str!("../../key"),
         )
