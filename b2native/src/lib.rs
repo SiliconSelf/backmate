@@ -1,8 +1,9 @@
 mod api;
 mod config;
 
-use crate::config::CONFIG;
 use reqwest::{Client, Error};
+
+use crate::config::CONFIG;
 
 #[derive(Debug)]
 pub struct Session {
@@ -21,16 +22,20 @@ pub enum SessionError {
     /// This is usually because the user gave incorrect inputs.
     AuthenticationRejected {
         code: api::ApiErrorCode,
-        message: String
+        message: String,
     },
-    /// The Backblaze API server returned a 200 status code, but deserialization failed
+    /// The Backblaze API server returned a 200 status code, but
+    /// deserialization failed
     ///
-    /// This should only happen if the version of this library you're using doesn't line up with the API version served by Backblaze.
+    /// This should only happen if the version of this library you're using
+    /// doesn't line up with the API version served by Backblaze.
     SuccessfulDeserializationFailed,
-    /// The Backblaze API server returned an error status code, but deserialization failed.
+    /// The Backblaze API server returned an error status code, but
+    /// deserialization failed.
     ///
-    /// This should only happen if the version of this library you're using doesn't line up with the API version served by Backblaze.
-    ErrorDeserializationFailed
+    /// This should only happen if the version of this library you're using
+    /// doesn't line up with the API version served by Backblaze.
+    ErrorDeserializationFailed,
 }
 
 impl From<Error> for SessionError {
@@ -54,11 +59,12 @@ impl Session {
             .send()
             .await?;
         if response.status().is_success() {
-            if let Ok(body) = response.json::<api::b2_authorize_account::Response>()
-                .await {
+            if let Ok(body) =
+                response.json::<api::b2_authorize_account::Response>().await
+            {
                 Ok(Self {
                     _token: body.authorization_token,
-                    _http_client: client
+                    _http_client: client,
                 })
             } else {
                 Err(SessionError::SuccessfulDeserializationFailed)
@@ -66,7 +72,7 @@ impl Session {
         } else if let Ok(error) = response.json::<api::ApiError>().await {
             Err(SessionError::AuthenticationRejected {
                 code: error.code,
-                message: error.message
+                message: error.message,
             })
         } else {
             Err(SessionError::ErrorDeserializationFailed)
@@ -82,8 +88,9 @@ mod tests {
     async fn test_auth() {
         let session = Session::try_new(
             include_str!("../../key_id"),
-            include_str!("../../key")
-        ).await;
+            include_str!("../../key"),
+        )
+        .await;
         assert!(session.is_ok())
     }
 }

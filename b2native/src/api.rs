@@ -1,10 +1,10 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 pub(crate) mod b2_authorize_account;
 
 pub(crate) enum Error {
     /// The provided value could not be deserialized
-    DeserializationFailed
+    DeserializationFailed,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -12,7 +12,7 @@ pub(crate) enum Error {
 pub struct ApiError {
     pub status: usize,
     pub code: ApiErrorCode,
-    pub message: String
+    pub message: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

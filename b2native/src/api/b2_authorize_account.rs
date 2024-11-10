@@ -1,5 +1,7 @@
 use std::future::Future;
+
 use serde::{Deserialize, Serialize};
+
 use crate::api::ApiErrorCode;
 
 #[derive(Serialize, Deserialize)]
@@ -114,7 +116,8 @@ mod tests {
 
     #[test]
     fn deserialize_ok() {
-        serde_json::from_str::<Response>(r#"
+        serde_json::from_str::<Response>(
+            r#"
 {
   "accountId": "ACCOUNT_ID",
   "apiInfo": {
@@ -167,6 +170,8 @@ mod tests {
   },
   "applicationKeyExpirationTimestamp": null,
   "authorizationToken": "AUTHORIZATION_TOKEN"
-}"#).unwrap();
+}"#,
+        )
+        .unwrap();
     }
 }
