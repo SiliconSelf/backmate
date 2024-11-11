@@ -5,7 +5,7 @@ use std::{
     ops::{ControlFlow, FromResidual, Try},
 };
 
-use reqwest::{Body, Request, Response};
+use reqwest::Response;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 pub(crate) mod b2_authorize_account;
