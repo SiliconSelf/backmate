@@ -4,8 +4,10 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{api::OutgoingRequest, ApiError, Session};
-use crate::api::ApiResult;
+use crate::{
+    api::{ApiResult, OutgoingRequest},
+    ApiError, Session,
+};
 
 /// The request body
 #[derive(Serialize, Deserialize)]
@@ -143,7 +145,6 @@ pub(crate) struct ServerSideEncryptionValue {
 }
 
 /// Lifecycle Rules
-///
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct LifecycleRules {
@@ -218,25 +219,28 @@ pub(crate) struct ReplicationDestination {
     source_to_destination_key_mapping: String,
 }
 
-impl OutgoingRequest<'_, Request> for Session {
-    type Response = Response;
+impl OutgoingRequest<Request> for Session {
     type Error = ApiError;
     type Failure = reqwest::Error;
+    type Response = Response;
 
-    async fn send(&mut self, body: Request) -> ApiResult<Self::Response, Self::Error, Self::Failure> {
+    async fn send(
+        &mut self,
+        body: Request,
+    ) -> ApiResult<Self::Response, Self::Error, Self::Failure> {
         let url = format!(
             "{}/b2api/v3/b2_list_buckets",
             self.storage_api_info.api_url
         );
         let body_ser = serde_json::to_string(&body)
             .expect("Failed to serialize request body");
-        let mut request = self.http_client.post(&url)
+        let request = self
+            .http_client
+            .post(&url)
             .header("Authorization", &self.token)
             .body(body_ser)
             .build()?;
-        let response = self.http_client
-            .execute(request)
-            .await?;
-        todo!();
+        let response = self.http_client.execute(request).await?;
+        response.into()
     }
 }
