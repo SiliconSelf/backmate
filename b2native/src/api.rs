@@ -32,6 +32,21 @@ pub enum ApiErrorCode {
     /// The request had the wrong fields or illegal values. The message
     /// returned with the error will describe the problem.
     BadRequest,
+    /// The auth token used is not valid.
+    ///
+    /// Call b2_authorize_account again to either get a new one, or an error
+    /// message describing the problem.
+    BadAuthToken,
+    /// The auth token used has expired.
+    ///
+    /// Call b2_authorize_account again to get a new one.
+    ExpiredAuthToken,
+    /// The auth token used is valid, but does not authorize this call with
+    /// these parameters.
+    ///
+    /// The capabilities of an auth token are determined by the application key
+    /// used with b2_authorize_account.
+    Unauthorized,
     /// An undocumented error code returned by the Backblaze API
     #[serde(other)]
     Other,

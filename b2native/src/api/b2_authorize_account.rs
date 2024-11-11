@@ -3,9 +3,12 @@
 //! [API Docs](https://www.backblaze.com/apidocs/b2-authorize-account)
 
 use serde::{Deserialize, Serialize};
-use crate::api::{ApiResult, OutgoingRequest};
-use crate::{ApiError, Session};
-use crate::config::CONFIG;
+
+use crate::{
+    api::{ApiResult, OutgoingRequest},
+    config::CONFIG,
+    ApiError, Session,
+};
 
 /// The request body
 #[derive(Serialize, Deserialize)]
